@@ -66,7 +66,7 @@ timestamp,temp_c,voltage_v,current_a,soc_pct,rpm
 ## ⚙️ How to Run Locally
 1. Clone the Repository
 
-- git clone https://github.com/your-username/ev-battery-heatmap-dashboard.git
+- git clone  https://github.com/Hunterrassassin/ev_battery_heatmap_dashboard.git
 - cd ev-battery-heatmap-dashboard
 2. Create Virtual Environment
 - python -m venv .venv
