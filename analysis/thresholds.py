@@ -1,13 +1,16 @@
 # analysis/thresholds.py
 
-rpm_temp_limits = {
-    1200: 45,
-    1800: 47,
-    2400: 48.5,
-    3000: 49.5
-}
-
 def get_safe_limit(rpm):
-    # Default to highest threshold if unknown RPM
-    return rpm_temp_limits.get(rpm, 80)
+    """
+    Dynamically computes the safe temperature limit for a given RPM.
+    Ensures that as RPM increases, so does the thermal threshold.
+    Compatible with synthetic data and real-world scaling.
+
+    For example:
+    - At 1000 RPM → Safe limit = 40°C
+    - At 3000 RPM → Safe limit = 60°C
+    - At 4000 RPM → Safe limit = 70°C
+    """
+    return 0.01 * rpm + 30
+
 

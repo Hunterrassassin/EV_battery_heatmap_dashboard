@@ -28,27 +28,40 @@ A dynamic data visualization tool for detecting thermal stress in EV batteries u
 
 ev_battery_heatmap/
 │
-├── - app/ # Flask app backend
-│ ├── app.py # Main app file
-│ ├── static/ # Heatmap images are stored here
-│ │ └── heatmaps/
-│ └── templates/
-│ └── dashboard.html # Frontend dashboard
-│
-├── analysis/ # Data processing logic
-│ ├── parser.py
-│ └── thresholds.py
-│
-├── data/
-│ └── battery_log_sample.csv
-│ └── battery_log_large.csv
-│
-├── tests/
-│ └── test_parser.py
-│
+├── app.py
+├── heatmap.py
 ├── requirements.txt
 ├── README.md
-└── .gitignore
+├── .gitignore
+│
+├── data/
+│   ├── battery_labeled.csv
+│   ├── synthetic_battery_data.csv
+│   └── ...
+│
+├── models/
+│   ├── risk_predictor.pkl
+│   ├── scaler.pkl
+│
+├── ml/
+│   ├── label_generator.py
+│   ├── preprocess.py
+│   └── train_model.py
+│
+├── data_generator/
+│   └── generate_synthetic_data.py
+│
+├── analysis/
+│   ├── thresholds.py
+│   └── parser.py
+│
+├── static/
+│   └── heatmaps/
+│       └── *.png
+│
+├── templates/
+│   └── dashboard.html
+
 
 
 

@@ -3,7 +3,7 @@ import os
 
 
 def load_log_data():
-    file_path = os.path.join("data", "battery_log_large.csv")
+    file_path = os.path.join("data", "battery_labeled.csv")
 
     if not os.path.exists(file_path):
         print("❌ Log file not found:", file_path)
