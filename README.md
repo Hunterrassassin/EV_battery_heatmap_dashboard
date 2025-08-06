@@ -9,7 +9,7 @@ A dynamic data visualization tool for detecting thermal stress in EV batteries u
 - 📈 Generates heatmaps from time-series battery logs (temperature, RPM, SOC, etc.)
 - ⚠️ Highlights dangerous temperature zones exceeding safe limits
 - 📊 Displays multiple heatmaps dynamically on a professional web dashboard
-- 💡 Rule-based alert system using RPM-based temperature thresholds
+- 💡 ML-based risk prediction
 - 💻 Clean UI with live annotations and thermal zone summaries
 
 ---
