@@ -10,6 +10,9 @@ app = Flask(__name__)
 model = joblib.load("models/risk_predictor.pkl")
 scaler = joblib.load("models/scaler.pkl")
 
+# Map severity levels to readable labels
+severity_map = {0: "✅ Safe", 1: "⚠️ Moderate", 2: "🚨 High"}
+
 @app.route("/")
 def dashboard():
 
@@ -17,11 +20,12 @@ def dashboard():
     data = load_log_data()
     alerts = []
 
-    if data is not None and 'risk_flag' in data.columns:
-        risky_rows = data[data['risk_flag'] == 1]
-        for _, row in risky_rows.iterrows():
+    if data is not None and 'risk_level' in data.columns:
+        risky_rows = data[data['risk_level'] > 0]
+        for idx, row in risky_rows.iterrows():
+            severity = severity_map.get(int(row['risk_level']), "❓ Unknown")
             alerts.append(
-                f"Row {_}: Temp = {row['temp_c']}°C,SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
+                f" {severity}| Row {idx} | Temp = {row['temp_c']}°C,SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
             )
 
     # Load heatmaps from static/heatmaps/
@@ -56,6 +60,7 @@ def predict():
         features_scaled = scaler.transform(features)
         prediction = model.predict(features_scaled)[0]
 
+
         # Get heatmap images
         image_folder = os.path.join('static', 'heatmaps')
         image_files = [f"heatmaps/{f}" for f in os.listdir(image_folder) if f.lower().endswith('.png')]
@@ -63,15 +68,17 @@ def predict():
         # ⚠️ Generate alerts from dataset
         data = load_log_data()
         alerts = []
-        if data is not None and 'risk_flag' in data.columns:
-            risky_rows = data[data['risk_flag'] == 1]
-            for _, row in risky_rows.iterrows():
+        if data is not None and 'risk_level' in data.columns:
+            risky_rows = data[data['risk_level'] > 0]
+            for idx, row in risky_rows.iterrows():
+                severity = severity_map.get(int(row['risk_level']), "❓ Unknown")
                 alerts.append(
-                    f"⚠️ Risk = 1 at {row['timestamp']}s | Temp = {row['temp_c']}°C, SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
+                    f" {severity}| Row {idx} | Temp = {row['temp_c']}°C,SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
                 )
 
         # Set prediction result
-        prediction_result = "🚨 Risky" if prediction == 1 else "✅ Safe"
+        #prediction_result = "🚨 Risky" if prediction == 1 else "✅ Safe"
+        prediction_result = severity_map.get(int(prediction), "❓ Unknown")
 
         return render_template(
             "dashboard.html",

@@ -8,7 +8,7 @@ def preprocess(csv_path):
     df = pd.read_csv(csv_path)
 
     features = ['temp_c', 'voltage_v', 'current_a', 'soc_pct','rpm']
-    target = 'risk_flag'
+    target = 'risk_level'
 
     X = df[features].values
     y = df[target].values

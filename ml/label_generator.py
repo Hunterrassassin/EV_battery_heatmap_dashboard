@@ -11,28 +11,51 @@ def label_risk(input_csv_path, output_csv_path):
 
     df = pd.read_csv(input_csv_path)
 
-    # Add new column: risk_flag
-    def determine_risk(row):
-        temp_limit = get_safe_limit(row['rpm'])
-        risky_temp = row['temp_c'] > temp_limit
-        low_soc = row['soc_pct'] < 25
-        high_current = row['current_a'] > 20
-        abnormal_voltage = row['voltage_v'] < 300 or row['voltage_v'] > 410
-        high_rpm = row['rpm'] > 3000
+    # Add new column: risk_level
+    def determine_severity(row):
+        score = 0
 
-        # Compound condition for risk:
-        if (
-                risky_temp or
-                (high_current and low_soc) or
-                abnormal_voltage or
-                (risky_temp and high_rpm)
-        ):
-            return 1
-        return 0
+        # Temperature & RPM interaction
+        if row['temp_c'] > 65 and row['rpm'] > 3500:
+            score += 3
+        elif row['temp_c'] > 60:
+            score += 2
+        elif row['temp_c'] > 50:
+            score += 1
 
-    df['risk_flag'] = df.apply(determine_risk, axis=1)
+        # SOC & Current relationship
+        if row['soc_pct'] < 20 and row['current_a'] > 25:
+            score += 2
+        elif row['soc_pct'] < 30:
+            score += 1
+
+        # Current alone
+        if row['current_a'] > 26:
+            score += 2
+        elif row['current_a'] > 22:
+            score += 1
+
+        # Voltage sanity check
+        if row['voltage_v'] < 320 or row['voltage_v'] > 420:
+            score += 1
+
+        # RPM alone
+        if row['rpm'] > 4000:
+            score += 2
+        elif row['rpm'] > 3000:
+            score += 1
+
+        # Final severity classification
+        if score >= 4:
+            return 2  # High Risk
+        elif score >= 3:
+            return 1  # Moderate Risk
+        else:
+            return 0  # Safe
+
+    df['risk_level'] = df.apply(determine_severity, axis=1)
     df.to_csv(output_csv_path, index=False)
-    print(f"[✅] Smarter risk labels generated and saved to: {output_csv_path}")
+    print(f" risk levels generated and saved to: {output_csv_path}")
 
 if __name__ == "__main__":
     input_path = "data/synthetic_battery_data.csv"
