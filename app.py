@@ -22,7 +22,7 @@ def dashboard():
     if data is not None and 'risk_level' in data.columns:
         risky_rows = data[data['risk_level'] > 0]
         for idx, row in risky_rows.iterrows():
-            severity = severity_map.get(int(row['risk_level']), "❓ Unknown")
+            severity = severity_map.get(int(row['risk_level']), "Unknown")
             alerts.append(
                 f"{severity} | Row {idx} | Temp = {row['temp_c']}°C, SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
             )
@@ -101,12 +101,12 @@ def predict():
         if data is not None and 'risk_level' in data.columns:
             risky_rows = data[data['risk_level'] > 0]
             for idx, row in risky_rows.iterrows():
-                severity = severity_map.get(int(row['risk_level']), "❓ Unknown")
+                severity = severity_map.get(int(row['risk_level']), "Unknown")
                 alerts.append(
                     f"{severity} | Row {idx} | Temp = {row['temp_c']}°C, SOC = {row['soc_pct']}%, RPM = {row['rpm']}"
                 )
 
-        prediction_result = severity_map.get(int(prediction), "❓ Unknown")
+        prediction_result = severity_map.get(int(prediction), "Unknown")
 
         return render_template(
             "dashboard.html",
