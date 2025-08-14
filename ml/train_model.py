@@ -22,11 +22,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X_train, y_train)
 
-# Evaluate
-# y_pred = model.predict(X_test)
-# print("[📊] Classification Report:")
-# print(classification_report(y_test, y_pred))
-# print(f"[✅] Accuracy: {accuracy_score(y_test, y_pred):.2f}")
+#Evaluate
+y_pred = model.predict(X_test)
+print("[📊] Classification Report:")
+print(classification_report(y_test, y_pred))
+print(f"[✅] Accuracy: {accuracy_score(y_test, y_pred):.2f}")
 
 # Save the trained model
 os.makedirs("models", exist_ok=True)

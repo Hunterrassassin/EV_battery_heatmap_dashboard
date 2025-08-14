@@ -12,74 +12,205 @@
         body {
             margin: 0;
             padding: 0;
-            background-color: #0f0f0f;
-            color: #f2f2f2;
-            font-family: 'Orbitron', 'Segoe UI', sans-serif;
+            background:
+                radial-gradient(ellipse at top, rgba(0, 255, 157, 0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at bottom left, rgba(255, 0, 128, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(0, 123, 255, 0.2) 0%, transparent 50%),
+                linear-gradient(135deg, #0a0e1a 0%, #1a1d29 25%, #0f1419 50%, #0d1117 75%, #000000 100%);
+            color: #e6fffa;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" fill="none" stroke="%2300ff9d" stroke-width="0.5" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>'),
+                radial-gradient(circle at 15% 15%, rgba(0, 255, 157, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(0, 123, 255, 0.03) 0%, transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: auto;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
             text-align: center;
-            color: #00ff88;
-            font-size: 2.5rem;
+            background: linear-gradient(135deg, #00ff9d 0%, #00d4ff 30%, #007bff 60%, #6c5ce7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 3.2rem;
             margin-bottom: 1rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            text-shadow: 0 0 40px rgba(0, 255, 157, 0.4);
+            position: relative;
         }
 
-/* Clean toggle button (no blinking, elegant) */
-        .toggle-button {
-            background-color: #ff3b3b;
-            color: #ffffff;
-            border: none;
-            padding: 10px 18px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff9d, #00d4ff, #007bff, transparent);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
         }
 
-        .toggle-button:hover {
-            background-color: #ff5c5c;
-            transform: scale(1.05);
-        }
-
-/* Alerts container */
+        /* Premium Alert Container */
         .alert-container {
             margin-top: 25px;
-            padding: 15px;
-            border: 2px solid #ff3b3b;
-            border-radius: 10px;
-            background-color: #1e1e1e;
-            color: #ffffff;
+            padding: 0;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(20, 25, 40, 0.95) 0%, rgba(15, 20, 35, 0.95) 100%);
+            backdrop-filter: blur(25px);
+            box-shadow:
+                0 20px 60px rgba(255, 0, 100, 0.15),
+                0 0 0 1px rgba(255, 0, 100, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
         }
 
-/* Alert list */
+        .alert-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff006e, #fb5607, #ffbe0b, #8338ec);
+            background-size: 200% 100%;
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .alert-container::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 0, 110, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(251, 86, 7, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .toggle-button, .toggle-button-blink {
+            background: linear-gradient(135deg, #ff006e 0%, #fb5607 50%, #ffbe0b 100%);
+            color: #ffffff;
+            border: none;
+            padding: 16px 32px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow:
+                0 8px 32px rgba(255, 0, 110, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            margin: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .toggle-button::before, .toggle-button-blink::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .toggle-button:hover::before, .toggle-button-blink:hover::before {
+            left: 100%;
+        }
+
+        .toggle-button:hover, .toggle-button-blink:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 15px 45px rgba(255, 0, 110, 0.4),
+                0 0 30px rgba(255, 182, 11, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        /* Alert List */
         .alert-list {
             list-style-type: none;
             padding-left: 0;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 13px;
             margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
         }
 
         .alert-list li {
-            padding: 8px;
-            border-bottom: 1px solid #444;
-            color: #ffffff;  /* Matches dashboard font color */
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+            transition: background-color 0.2s ease;
+        }
+
+        .alert-list li:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .alert-list li:last-child {
+            border-bottom: none;
         }
 
         .no-alerts {
-            background-color: #2e7d32;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+            color: #10b981;
+            padding: 16px 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 4px 12px rgba(16, 185, 129, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
-
 
         .heatmap-section {
             margin-top: 3rem;
@@ -87,60 +218,352 @@
 
         .heatmap-img {
             width: 100%;
-            border-radius: 10px;
+            border-radius: 16px;
             margin: 1rem 0;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-            transition: transform 0.3s ease-in-out;
+            box-shadow:
+                0 10px 40px rgba(0, 0, 0, 0.3),
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(10px);
         }
 
         .heatmap-img:hover {
-            transform: scale(1.07);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(0, 212, 255, 0.3);
         }
 
         h2 {
-            color: #00bfff;
+            color: #00ff9d;
             font-size: 1.8rem;
-            border-bottom: 2px solid #00bfff;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            position: relative;
             padding-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #00ff9d 0%, #00d4ff 50%, #007bff 100%);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.6);
+            border-radius: 2px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 85px;
+            bottom: -1px;
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(0, 255, 157, 0.3), transparent);
         }
 
         p {
-            color: #ccc;
+            color: #cbd5e1;
+            line-height: 1.6;
+            font-weight: 400;
         }
 
         .footer {
             margin-top: 4rem;
             text-align: center;
             font-size: 0.9rem;
-            color: #777;
+            color: #64748b;
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            margin-top: 3rem;
         }
 
         .heatmap-wrapper {
-        margin-bottom: 2.5rem;
-        text-align: center;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.6) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .heatmap-wrapper:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(0, 212, 255, 0.1);
         }
 
         .image-caption {
-            margin-top: 0.5rem;
-            font-size: 0.95rem;
-            color: #00ffaa;
-            background-color: #1a1a1a;
+            margin-top: 1rem;
+            font-size: 14px;
+            color: #00f5ff;
+            background: linear-gradient(135deg, rgba(0, 245, 255, 0.1) 0%, rgba(0, 212, 255, 0.1) 100%);
             display: inline-block;
-            padding: 4px 12px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-weight: 500;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 6px rgba(0, 255, 170, 0.3);
-            }
-
-        .prediction-result {
-            background-color: #1a1a1a;
-            border-left: 4px solid #007bff;
-            padding: 1rem;
-            margin-top: 2rem;
-            border-radius: 5px;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+            font-size: 12px;
         }
 
+        .prediction-result {
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            margin-top: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            box-shadow:
+                0 4px 12px rgba(59, 130, 246, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Premium Form Styles */
+        form {
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.9) 0%, rgba(26, 29, 41, 0.9) 100%);
+            backdrop-filter: blur(25px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            border: 1px solid rgba(0, 255, 157, 0.2);
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ff9d, #00d4ff, transparent);
+        }
+
+        label {
+            display: block;
+            color: #00ff9d;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            margin-top: 1rem;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 16px 20px;
+            border: 1px solid rgba(0, 255, 157, 0.3);
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(20, 25, 40, 0.4) 100%);
+            color: #e6fffa;
+            font-size: 15px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #00ff9d;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(20, 25, 40, 0.6) 100%);
+            box-shadow:
+                0 0 0 3px rgba(0, 255, 157, 0.2),
+                0 0 20px rgba(0, 255, 157, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        input[type="number"]::placeholder {
+            color: rgba(230, 255, 250, 0.4);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #00ff9d 0%, #00d4ff 50%, #007bff 100%);
+            color: #000000;
+            border: none;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 2rem;
+            box-shadow:
+                0 8px 32px rgba(0, 255, 157, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        button[type="submit"]::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        button[type="submit"]:hover::before {
+            left: 100%;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 15px 50px rgba(0, 255, 157, 0.5),
+                0 0 30px rgba(0, 212, 255, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        /* Time to Failure Section Styles */
+        .time-to-failure-section {
+            margin-top: 2.5rem;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(30, 41, 59, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        #timeToFailureTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: transparent;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        #timeToFailureTable th {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: #00f5ff;
+            padding: 16px 12px;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 2px solid rgba(0, 245, 255, 0.3);
+        }
+
+        #timeToFailureTable td {
+            padding: 14px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+            color: #cbd5e1;
+            text-align: center;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        #timeToFailureTable tr:nth-child(even) td {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        #timeToFailureTable tr:hover td {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        .ttf-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 11px;
+            min-width: 80px;
+            color: #000;
+            text-align: center;
+            text-shadow: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .ttf-safe {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .ttf-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .ttf-critical {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #fff;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .heatmap-wrapper {
+                padding: 1rem;
+            }
+
+            form {
+                padding: 1.5rem;
+            }
+
+            #timeToFailureTable th,
+            #timeToFailureTable td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #00f5ff 0%, #00d4ff 100%);
+        }
 
     </style>
 </head>
@@ -203,6 +626,63 @@
         {% endif %}
 
 
+        <!-- New Time to Failure Section -->
+        <div class="time-to-failure-section">
+            <h2>⏳ Time to Failure Prediction</h2>
+            <table id="timeToFailureTable" border="1" cellpadding="8" style="background-color: transparent; color: #fff; text-align: center;">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Temperature (°C)</th>
+                        <th>SOC (%)</th>
+                        <th>Predicted Time to Failure (seconds)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <script>
+        // Fetch and populate Time to Failure data
+        fetch('/time_to_failure_data')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.querySelector('#timeToFailureTable tbody');
+                tableBody.innerHTML = ""; // Clear loading row
+                if (data.error) {
+                    tableBody.innerHTML = `<tr><td colspan="4">Error: ${data.error}</td></tr>`;
+                } else if (!Array.isArray(data) || data.length === 0) {
+                    tableBody.innerHTML = `<tr><td colspan="4">No data available</td></tr>`;
+                } else {
+                    data.forEach(row => {
+                        const ttf = (typeof row.predicted_time_to_failure === 'number') ? row.predicted_time_to_failure : parseFloat(row.predicted_time_to_failure || 0);
+                        let badgeClass = 'ttf-safe';
+                        if (ttf < 60) badgeClass = 'ttf-critical';
+                        else if (ttf < 300) badgeClass = 'ttf-warning';
+
+                        const temp = (row.temp_c === null || row.temp_c === undefined) ? '-' : parseFloat(row.temp_c).toFixed(1);
+                        const soc = (row.soc_pct === null || row.soc_pct === undefined) ? '-' : parseFloat(row.soc_pct).toFixed(1);
+
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td>${row.timestamp}</td>
+                            <td>${temp}</td>
+                            <td>${soc}</td>
+                            <td><span class="ttf-badge ${badgeClass}">${ttf.toFixed(2)}</span></td>
+                        `;
+                        tableBody.appendChild(tr);
+                    });
+                }
+            })
+            .catch(err => {
+                document.querySelector('#timeToFailureTable tbody').innerHTML = `<tr><td colspan="4">Error fetching data</td></tr>`;
+                console.error(err);
+            });
+        </script>
 
         <div class="heatmap-section">
             <h2>Temperature Heatmaps</h2>
@@ -220,7 +700,7 @@
         </div>
 
         <div class="footer">
-            &copy; 2025 EV Thermal Optimizer | Developed by Sanidhiya Gupta 🚗⚡
+            &copy; 2025 EV Thermal Optimizer | Developed by Sanidhiya Gupta
         </div>
     </div>
 </body>
