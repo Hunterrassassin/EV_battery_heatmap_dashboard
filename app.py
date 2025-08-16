@@ -5,6 +5,9 @@ import joblib
 from flask import Flask, render_template, request, jsonify
 from analysis.parser import load_log_data
 from datetime import datetime, timedelta
+from gmail_service import send_email
+
+
 
 app = Flask(__name__)
 
@@ -35,6 +38,8 @@ def dashboard():
 
 @app.route('/time_to_failure_data')
 def time_to_failure_data():
+
+
     try:
         df = pd.read_csv('data/battery_labeled_with_time.csv')
 
@@ -55,6 +60,17 @@ def time_to_failure_data():
 
         # Sort by shortest predicted time to failure and take top 10
         df = df.sort_values(by='predicted_time_to_failure', ascending=True).head(10)
+
+        # ✅ Send email if any critical case is detected (< 5 minutes)
+        for _, row in df.iterrows():
+            if row['predicted_time_to_failure'] <= 3600:  # 5 minutes
+                battery_id = row.get('Battery_ID', 'Unknown')
+                send_email(
+                    "raunit1819@gmail.com",
+                    f"⚠️ Battery {battery_id} Critical Alert!",
+                    f"Battery {battery_id} is predicted to fail in {int(row['predicted_time_to_failure'])} seconds.\n"
+                    f"Please take immediate action!"
+                )
 
         # Convert to display-friendly time left (mm:ss format)
         df['time_left'] = pd.to_timedelta(df['predicted_time_to_failure'], unit='s').astype(str)
