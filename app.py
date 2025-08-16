@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, jsonify
 from analysis.parser import load_log_data
 from datetime import datetime, timedelta
 from gmail_service import send_email
-
+from dotenv import load_dotenv
 
 
 app = Flask(__name__)
@@ -61,15 +61,21 @@ def time_to_failure_data():
         # Sort by shortest predicted time to failure and take top 10
         df = df.sort_values(by='predicted_time_to_failure', ascending=True).head(10)
 
+        # Load environment variables from .env
+        load_dotenv()
+
+        SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+        RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
+
         # ✅ Send email if any critical case is detected (< 5 minutes)
         for _, row in df.iterrows():
             if row['predicted_time_to_failure'] <= 3600:  # 5 minutes
                 battery_id = row.get('Battery_ID', 'Unknown')
                 send_email(
-                    "raunit1819@gmail.com",
-                    f"⚠️ Battery {battery_id} Critical Alert!",
-                    f"Battery {battery_id} is predicted to fail in {int(row['predicted_time_to_failure'])} seconds.\n"
-                    f"Please take immediate action!"
+                    to=RECEIVER_EMAIL,
+                    subject=f"⚠️ Battery {battery_id} Critical",
+                    body_text=f"Battery {battery_id} is predicted to fail soon.\n"
+                              f"Please take immediate action.",
                 )
 
         # Convert to display-friendly time left (mm:ss format)
