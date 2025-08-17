@@ -64,6 +64,7 @@ def time_to_failure_data():
         # Load environment variables from .env
         load_dotenv()
 
+
         SENDER_EMAIL = os.getenv("SENDER_EMAIL")
         RECEIVER_EMAIL = os.getenv("RECEIVER_EMAIL")
 
@@ -74,7 +75,7 @@ def time_to_failure_data():
                 send_email(
                     to=RECEIVER_EMAIL,
                     subject=f"⚠️ Battery {battery_id} Critical",
-                    body_text=f"Battery {battery_id} is predicted to fail soon.\n"
+                    body_text=f"Battery {battery_id} may fail in {row['predicted_time_to_failure']} seconds.\n"
                               f"Please take immediate action.",
                 )
 
